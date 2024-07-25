@@ -3,12 +3,11 @@ import bcrypt from "bcryptjs"
 import generateTokenAndSetCookie from "../utils/generateToken.js";
 
 export const login = async (req, res) => {
-    console.log("loginuser");
     try {
         const { userName, password } = req.body;
         const user = await User.findOne({ userName });
         const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
-
+        
         if (!user || !isPasswordCorrect) {
             return res.status(400).json({
                 error: "Invalid credentials"
